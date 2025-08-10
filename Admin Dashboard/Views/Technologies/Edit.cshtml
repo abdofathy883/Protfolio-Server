@@ -1,0 +1,49 @@
+﻿@model Core.Models.Technology
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Technology</h4>
+<hr />
+
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Icon File</label>
+        <input asp-for="IconUrl" type="file" accept="image/*" class="form-control" />
+        <small class="text-muted">Leave empty to keep existing icon</small>
+        <span asp-validation-for="IconUrl" class="text-danger"></span>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Model.IconUrl))
+    {
+        <div class="mb-3">
+            <label class="form-label">Current Icon</label>
+            <div>
+                <img src="@Model.IconUrl" alt="@Model.Name" class="img-thumbnail" style="max-height: 120px;" />
+            </div>
+            <input type="hidden" name="IconUrl" value="@Model.IconUrl" />
+        </div>
+    }
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
+
+
+<div class="py-3">
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

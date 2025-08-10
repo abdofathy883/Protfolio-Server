@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Core.Models.Technology>
+
+@{
+    ViewData["Title"] = "All Technologies";
+}
+
+<h1>All Technologies</h1>
+<a asp-action="Create" class="btn btn-primary">Create New</a>
+
+<table class="content-table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IconUrl)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        
+            <tr class="clickable-row" data-href="@Url.Action("Edit", "Technologies", new { id = item.Id })" style="cursor: pointer;">
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IconUrl)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('tr.clickable-row').forEach(function (row) {
+            row.addEventListener('click', function (e) {
+                if (e.target.closest('a, button, input, label')) return;
+                const href = row.getAttribute('data-href');
+                if (href) window.location = href;
+            });
+        });
+    });
+</script>

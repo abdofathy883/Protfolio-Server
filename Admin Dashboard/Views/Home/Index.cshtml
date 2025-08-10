@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row mb-3">
+    <div class="col-sm-12 col-lg-6 mb-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <h5 class="card-title">Number Of Projects</h5>
+                <p class="card-text"><strong>@(ViewBag.ProjectCount ?? 0)</strong></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-lg-6 mb-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <h5 class="card-title">Number Of Technologies</h5>
+                <p class="card-text"><strong>@(ViewBag.TechnologiesCount ?? 0)</strong></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-lg-6 mb-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <h5 class="card-title">Number Of Form Entries</h5>
+                <p class="card-text"><strong>@(ViewBag.EntriesCount ?? 0)</strong></p>
+            </div>
+        </div>
+    </div>
+</div>
