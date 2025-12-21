@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Core.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace Core.DTOs
 {
@@ -6,6 +7,8 @@ namespace Core.DTOs
     {
         public required string Title { get; set; }
         public required string Description { get; set; }
+        public int ProjectID { get; set; }
+        public Language Language { get; set; }
         public required List<CreateProjectImageDTO> Images { get; set; }
         public IFormFile? VideoFile { get; set; }
         public required List<string> Technologies { get; set; }

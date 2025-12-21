@@ -1,4 +1,5 @@
 ﻿using Core.DTOs;
+using Core.Enums;
 using Core.Interfaces;
 using Core.Models;
 using Infrastructure.Data;
@@ -18,23 +19,24 @@ namespace Infrastructure.Services
             context = dbContext;
             mediaUploadService = service;
         }
-        public async Task<List<ProjectDTO>> GetAll()
+        public async Task<List<ProjectDTO>> GetAll(Language lang)
         {
             var projects = await context.Projects
                 .AsNoTracking()
                 .Include(p => p.Images)
+                .Where(p => p.Language == lang)
                 .ToListAsync()
                 ?? throw new Exception();
 
             return projects.Select(MapToProjectDTO).ToList();
         }
 
-        public async Task<ProjectDTO> GetById(int id)
+        public async Task<ProjectDTO> GetById(int id, Language lang)
         {
             var project = await context.Projects
                 .AsNoTracking()
                 .Include(p => p.Images)
-                .FirstOrDefaultAsync(p => p.Id == id)
+                .FirstOrDefaultAsync(p => p.Id == id && p.Language == lang)
                 ?? throw new Exception();
 
             return MapToProjectDTO(project);
@@ -48,6 +50,21 @@ namespace Infrastructure.Services
             await using var tx = await context.Database.BeginTransactionAsync();
             try
             {
+                // ✅ Step 1: find existing project by ContentId
+                
+
+                int projectId;
+                if (dto.ProjectID == 0) // new project
+                {
+                    projectId = await context.Projects.AnyAsync()
+                        ? await context.Projects.MaxAsync(p => p.ProjectID) + 1
+                        : 1;
+                }
+                else
+                {
+                    projectId = dto.ProjectID;
+                }
+
                 var imageResults = new List<(string Url, string? Alt, bool IsFeatured, string Path)>();
                 foreach (var img in dto.Images)
                 {
@@ -66,10 +83,14 @@ namespace Infrastructure.Services
                     videoPath = res.PhysicalPath;
                 }
 
+               
+
                 var project = new Project
                 {
                     Title = dto.Title,
                     Description = dto.Description,
+                    Language = dto.Language,
+                    ProjectID = projectId,
                     Images = imageResults.Select(x => new ProjectImage
                     {
                         Url = x.Url,
@@ -117,6 +138,8 @@ namespace Infrastructure.Services
         {
             Id = p.Id,
             Title = p.Title,
+            Language = p.Language,
+            ProjectId = p.ProjectID,
             Description = p.Description,
             Images = p.Images.Select(MapToImageDTO).ToList(),
             Video = p.Video,

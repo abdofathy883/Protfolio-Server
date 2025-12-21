@@ -1,0 +1,133 @@
+﻿\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{xcolor}
+
+% Set margins and page layout
+\geometry{margin=1in, top=1.5in, bottom=1in}
+
+% Header and footer setup
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\includegraphics[width=2cm]{logo.png}}
+\fancyhead[R]{\textcolor{blue}{\textbf{Portfolio Solutions}}}
+\fancyfoot[C]{\thepage\ of \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Custom colors
+\definecolor{primary}{RGB}{0, 102, 204}
+\definecolor{secondary}{RGB}{51, 51, 51}
+
+\begin{document}
+
+% Title page
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+
+% Logo
+\includegraphics[width=4cm]{logo.png}
+
+\vspace{1cm}
+
+% Main title
+{\Huge \textcolor{primary}{\textbf{Project Proposal}}}\\[0.5cm]
+{\Large \textbf{{ clientName }}}\\[1cm]
+
+% Company information
+{\large \textbf{Prepared by:}}\\[0.3cm]
+{\large \textbf{Portfolio Solutions}}\\[0.3cm]
+{\large \textbf{Abdul Rahman Fathy}}\\[0.3cm]
+{\large Business Systems Developer}\\[0.3cm]
+
+\vfill
+
+% Contact information
+{\large \textbf{Contact Information:}}\\[0.3cm]
+{\large WhatsApp: +20 123 456 7890}\\[0.3cm]
+{\large Email: contact@portfolio-solutions.com}\\[0.3cm]
+{\large Website: www.portfolio-solutions.com}
+
+\end{titlepage}
+
+% Table of contents
+\tableofcontents
+\newpage
+
+% Executive Summary
+\section*{\textcolor{primary}{Executive Summary}}
+{{ projectDescription }}
+
+% System Components and Features
+\section*{\textcolor{primary}{System Components and Features}}
+
+{{ for feature in features }}
+\subsection*{\textcolor{secondary}{{ feature.headline }}}
+
+{{ if feature.subFeatures != null && feature.subFeatures.size > 0 }}
+\begin{itemize}[leftmargin=1.5cm]
+    {{ for subFeature in feature.subFeatures }}
+        \item \textbf{{ subFeature.title }}
+        {{ if subFeature.bulletPoints.size > 0 }}
+        \begin{itemize}[leftmargin=1cm]
+            {{ for bulletPoint in subFeature.bulletPoints }}
+                \item {{ bulletPoint }}
+            {{ end }}
+        \end{itemize}
+        {{ end }}
+    {{ end }}
+\end{itemize}
+{{ end }}
+
+{{ end }}
+
+% Project Phases (Conditional)
+{{ if phases != null && phases.size > 0 }}
+\section*{\textcolor{primary}{Project Implementation Phases}}
+
+{{ for phase in phases }}
+\subsection*{\textcolor{secondary}{{ phase.title }}}
+{{ phase.description }}
+{{ end }}
+{{ end }}
+
+% Timeline
+{{ if timeline.size > 0 }}
+\section*{\textcolor{primary}{Project Timeline}}
+\begin{itemize}[leftmargin=1.5cm]
+    {{ for t in timeline }}
+        \item {{ t }}
+    {{ end }}
+\end{itemize}
+{{ end }}
+
+% Cost and Payment Terms
+\section*{\textcolor{primary}{Cost and Payment Terms}}
+{{ projectCost }}
+
+% About the Developer
+\section*{\textcolor{primary}{About the Developer}}
+This proposal was prepared by \textbf{Eng. Abdul Rahman Fathy}, a business systems developer with extensive experience in designing software solutions for small and medium-sized projects. Our focus is on:
+
+\begin{itemize}[leftmargin=1.5cm]
+    \item Ease of use and intuitive interfaces
+    \item Performance efficiency and reliability
+    \item Scalable solutions that grow with your business
+    \item Comprehensive support and maintenance
+\end{itemize}
+
+% Contact Information
+\section*{\textcolor{primary}{Contact Information}}
+\begin{center}
+\textbf{Portfolio Solutions}\\[0.3cm]
+\textbf{Abdul Rahman Fathy}\\[0.3cm]
+\textbf{Business Systems Developer}\\[0.3cm]
+\textbf{WhatsApp:} +20 123 456 7890\\[0.3cm]
+\textbf{Email:} contact@portfolio-solutions.com\\[0.3cm]
+\textbf{Website:} www.portfolio-solutions.com
+\end{center}
+
+\end{document}

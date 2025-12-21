@@ -1,10 +1,14 @@
-﻿namespace Core.DTOs
+﻿using Core.Enums;
+
+namespace Core.DTOs
 {
     public class ProjectDTO
     {
         public int Id { get; set; }
         public required string Title { get; set; }
         public required string Description { get; set; }
+        public int ProjectId { get; set; }
+        public Language Language { get; set; }
         public required List<ProjectImageDTO> Images { get; set; }
         public string? Video { get; set; }
         public required List<string> Technologies { get; set; }

@@ -1,0 +1,208 @@
+﻿@using AdminDashboard
+@using AdminDashboard.Models
+@using Infrastructure.ViewModels
+@model ProposalVM
+
+<h2>Create Proposal</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label class="form-label">Title</label>
+        <input asp-for="Title" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Project Description</label>
+        <textarea asp-for="ProjectDescription" rows="5" class="form-control" required 
+                  placeholder="Describe the project overview and objectives..."></textarea>
+    </div>
+
+    <!-- Features Section -->
+    <div class="mb-3">
+        <label class="form-label">System Features</label>
+        <div id="features-container">
+            <div class="border rounded p-3 mb-2 feature-section" data-index="0">
+                <div class="d-flex justify-content-between mb-3">
+                    <h5>Feature #1</h5>
+                    <button type="button" class="btn btn-danger btn-sm remove-feature" onclick="removeFeature(this)">Remove Feature</button>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Feature Headline</label>
+                    <input name="Features[0].Headline" class="form-control" placeholder="e.g., Products Management" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Sub-features</label>
+                    <div class="sub-features-container" data-feature-index="0">
+                        <div class="sub-feature-item border rounded p-3 mb-2" data-subfeature-index="0">
+                            <div class="d-flex justify-content-between mb-2">
+                                <label class="form-label mb-0">Sub-feature #1</label>
+                                <button type="button" class="btn btn-danger btn-sm remove-subfeature" onclick="removeSubFeature(this)">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+                            </div>
+                            <input type="text" name="Features[0].SubFeatures[0].Title" class="form-control mb-2" placeholder="e.g., CRUD Operations on products" />
+                            <div class="mb-2">
+                                <label class="form-label small">Bullet Points (one per line)</label>
+                                <textarea name="Features[0].SubFeatures[0].BulletPoints" class="form-control" rows="3" 
+                                          placeholder="Enter bullet points, one per line..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-success btn-sm add-subfeature" onclick="addSubFeature(0)">+ Add Sub-feature</button>
+                </div>
+            </div>
+        </div>
+        <button type="button" id="add-feature" class="btn btn-outline-success btn-sm">+ Add Feature Section</button>
+    </div>
+
+    <!-- Phases Section -->
+    <div class="mb-3">
+        <label class="form-label">Project Phases</label>
+        <div id="phases-container">
+            <div class="border rounded p-3 mb-2 phase-section" data-phase-index="0">
+                <div class="d-flex justify-content-between mb-3">
+                    <h5>Phase #1</h5>
+                    <button type="button" class="btn btn-danger btn-sm remove-phase" onclick="removePhase(this)">Remove Phase</button>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Phase Title</label>
+                    <input name="Phases[0].Title" class="form-control" placeholder="e.g., Foundation Phase" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Phase Description</label>
+                    <textarea name="Phases[0].Description" class="form-control" rows="4" 
+                              placeholder="Describe what this phase includes, features, timeline, etc..."></textarea>
+                </div>
+            </div>
+        </div>
+        <button type="button" id="add-phase" class="btn btn-outline-success btn-sm">+ Add Phase</button>
+    </div>
+
+    @* <div class="mb-3">
+        <label class="form-label">Deliverables</label>
+        <textarea asp-for="DeliverablesRaw" class="form-control" rows="3" 
+                  placeholder="Enter deliverables, one per line..."></textarea>
+    </div> *@
+
+    <div class="mb-3">
+        <label class="form-label">Timeline</label>
+        <textarea asp-for="TimelineRaw" class="form-control" rows="4" 
+                  placeholder="Enter timeline details, milestones, deadlines, etc..."></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Project Cost</label>
+        <textarea asp-for="ProjectCost" class="form-control" rows="3"
+                  placeholder="Enter project cost details, payment terms, etc..."></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Generate PDF Proposal</button>
+</form>
+
+<script>
+    (function () {
+        let featureIndex = 1;
+        let phaseIndex = 1;
+        
+        // Add Feature functionality
+        document.getElementById('add-feature').addEventListener('click', function () {
+            const container = document.getElementById('features-container');
+            const newFeature = document.createElement('div');
+            newFeature.className = 'border rounded p-3 mb-2 feature-section';
+            newFeature.setAttribute('data-index', featureIndex);
+            newFeature.innerHTML = `
+                <div class="d-flex justify-content-between mb-3">
+                    <h5>Feature #${featureIndex + 1}</h5>
+                    <button type="button" class="btn btn-danger btn-sm remove-feature" onclick="removeFeature(this)">Remove Feature</button>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Feature Headline</label>
+                    <input name="Features[${featureIndex}].Headline" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Sub-features</label>
+                    <div class="sub-features-container" data-feature-index="${featureIndex}">
+                        <div class="sub-feature-item border rounded p-3 mb-2" data-subfeature-index="0">
+                            <div class="d-flex justify-content-between mb-2">
+                                <label class="form-label mb-0">Sub-feature #1</label>
+                                <button type="button" class="btn btn-danger btn-sm remove-subfeature" onclick="removeSubFeature(this)">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+                            </div>
+                            <input type="text" name="Features[${featureIndex}].SubFeatures[0].Title" class="form-control mb-2" placeholder="e.g., CRUD Operations on products" />
+                            <div class="mb-2">
+                                <label class="form-label small">Bullet Points (one per line)</label>
+                                <textarea name="Features[${featureIndex}].SubFeatures[0].BulletPoints" class="form-control" rows="3" 
+                                          placeholder="Enter bullet points, one per line..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-success btn-sm add-subfeature" onclick="addSubFeature(${featureIndex})">+ Add Sub-feature</button>
+                </div>
+            `;
+            container.appendChild(newFeature);
+            featureIndex++;
+        });
+        
+        // Add Phase functionality
+        document.getElementById('add-phase').addEventListener('click', function () {
+            const container = document.getElementById('phases-container');
+            const newPhase = document.createElement('div');
+            newPhase.className = 'border rounded p-3 mb-2 phase-section';
+            newPhase.setAttribute('data-phase-index', phaseIndex);
+            newPhase.innerHTML = `
+                <div class="d-flex justify-content-between mb-3">
+                    <h5>Phase #${phaseIndex + 1}</h5>
+                    <button type="button" class="btn btn-danger btn-sm remove-phase" onclick="removePhase(this)">Remove Phase</button>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Phase Title</label>
+                    <input name="Phases[${phaseIndex}].Title" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Phase Description</label>
+                    <textarea name="Phases[${phaseIndex}].Description" class="form-control" rows="4"></textarea>
+                </div>
+            `;
+            container.appendChild(newPhase);
+            phaseIndex++;
+        });
+    })();
+    
+    function removeFeature(button) {
+        button.parentElement.parentElement.remove();
+    }
+    
+    function removePhase(button) {
+        button.parentElement.parentElement.remove();
+    }
+    
+    function addSubFeature(featureIndex) {
+        const container = document.querySelector(`[data-feature-index="${featureIndex}"]`);
+        const subFeatureCount = container.children.length;
+        
+        const newSubFeature = document.createElement('div');
+        newSubFeature.className = 'sub-feature-item border rounded p-3 mb-2';
+        newSubFeature.setAttribute('data-subfeature-index', subFeatureCount);
+        newSubFeature.innerHTML = `
+            <div class="d-flex justify-content-between mb-2">
+                <label class="form-label mb-0">Sub-feature #${subFeatureCount + 1}</label>
+                <button type="button" class="btn btn-danger btn-sm remove-subfeature" onclick="removeSubFeature(this)">
+                    <i class="bi bi-trash-fill"></i>
+                </button>
+            </div>
+            <input type="text" name="Features[${featureIndex}].SubFeatures[${subFeatureCount}].Title" class="form-control mb-2" placeholder="e.g., CRUD Operations on products" />
+            <div class="mb-2">
+                <label class="form-label small">Bullet Points (one per line)</label>
+                <textarea name="Features[${featureIndex}].SubFeatures[${subFeatureCount}].BulletPoints" class="form-control" rows="3" 
+                          placeholder="Enter bullet points, one per line..."></textarea>
+            </div>
+        `;
+        
+        container.appendChild(newSubFeature);
+    }
+    
+    function removeSubFeature(button) {
+        button.parentElement.parentElement.remove();
+    }
+</script>

@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Core.Models.Project>
+
+@{
+    ViewData["Title"] = "All Projects";
+}
+
+<h1>All Projects</h1>
+<a asp-action="Create" class="btn btn-primary">Create New</a>
+
+<table class="content-table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Technologies)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Client)
+            </th>
+            <th>
+                @Html.DisplayNameFor(Model => Model.IsFeatured)
+            </th>
+            <th>
+                @Html.DisplayNameFor(Model => Model.Language)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr class="clickable-row" data-href="@Url.Action("Edit", "Projects", new { id = item.Id })" style="cursor: pointer;">
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            @* <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td> *@
+                <td title="@item.Description">
+                    @((item.Description?.Length ?? 0) > 25
+                                    ? item.Description.Substring(0, 25) + "…"
+                                    : item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Technologies)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Client)
+            </td>
+            <td>
+                    @if(item.IsFeatured)
+                    {
+                        <span>True</span>
+                    }
+                    @if(!item.IsFeatured)
+                    {
+                        <span>False</span>
+                    }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Language)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('tr.clickable-row').forEach(function (row) {
+            row.addEventListener('click', function (e) {
+                if (e.target.closest('a, button, input, label')) return;
+                const href = row.getAttribute('data-href');
+                if (href) window.location = href;
+            });
+        });
+    });
+</script>
