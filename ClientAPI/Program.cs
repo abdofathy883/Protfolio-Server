@@ -23,7 +23,7 @@ namespace ClientAPI
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            //builder.Services.AddOpenApi();
+            builder.Services.AddOpenApi();
 
             builder.Services.AddScoped<IContactFormService, ContactFormService>();
             builder.Services.AddScoped<IProjectService, ProjectService>();
@@ -43,10 +43,10 @@ namespace ClientAPI
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            //if (app.Environment.IsDevelopment())
-            //{
-            //    app.MapOpenApi();
-            //}
+            if (app.Environment.IsDevelopment())
+            {
+                app.MapOpenApi();
+            }
 
             app.UseHttpsRedirection();
 
