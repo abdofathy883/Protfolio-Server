@@ -29,7 +29,7 @@ jobs:
             ADMIN_OUT="/var/www/portfolio-back-out/AdminDashboard"
 
             mkdir -p "$APP_DIR"
-            cd "$APP_DIR
+            cd "$APP_DIR"
 
             # ====== Ensure repo exists and is clean ======
             if [ ! -d ".git" ]; then
