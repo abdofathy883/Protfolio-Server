@@ -23,43 +23,39 @@ jobs:
         ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} << 'EOF'
           set -e
 
-            # ====== Repo folder ======
-            APP_DIR="/var/www/portfolio-back"
-            API_OUT="/var/www/portfolio-back-out/ClientAPI"
-            ADMIN_OUT="/var/www/portfolio-back-out/AdminDashboard"
+          # ====== Repo folder ======
+          APP_DIR="/var/www/portfolio-back"
+          API_OUT="/var/www/portfolio-back-out/ClientAPI"
+          ADMIN_OUT="/var/www/portfolio-back-out/AdminDashboard"
+          mkdir -p "$APP_DIR"
+          cd "$APP_DIR"
 
-            mkdir -p "$APP_DIR"
-            cd "$APP_DIR"
+          # ====== Ensure repo exists and is clean ======
+          if [ ! -d ".git" ]; then
+            git init
+            git remote add origin https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_TOKEN }}@github.com/abdofathy883/Protfolio-Server.git
+          else
+            git remote set-url origin https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_TOKEN }}@github.com/abdofathy883/Protfolio-Server.git
+          fi
+          git fetch origin master
+          git reset --hard origin/master
 
-            # ====== Ensure repo exists and is clean ======
-            if [ ! -d ".git" ]; then
-              git init
-              git remote add origin https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_TOKEN }}@github.com/abdofathy883/Protfolio-Server.git
-            else
-              git remote set-url origin https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_TOKEN }}@github.com/abdofathy883/Protfolio-Server.git
-            fi
+          # ====== Publish API ======
+          echo "Publishing ClientAPI..."
+          dotnet publish ClientAPI/ClientAPI.csproj -c Release -o "$API_OUT"
 
-            git fetch origin master
-            git reset --hard origin/master
+          # ====== Publish Admin Dashboard ======
+          echo "Publishing AdminDashboard..."
+          dotnet publish AdminDashboard/AdminDashboard.csproj -c Release -o "$ADMIN_OUT"
 
-            # ====== Publish API ======
-            echo "Publishing ClientAPI..."
-            dotnet publish ClientAPI/ClientAPI.csproj -c Release -o "$API_OUT"
-
-            # ====== Publish Admin Dashboard ======
-            echo "Publishing AdminDashboard..."
-            dotnet publish AdminDashboard/AdminDashboard.csproj -c Release -o "$ADMIN_OUT"
-
-            # ====== Restart services ======
-            echo "Restarting services..."
-            systemctl restart portfolio-clientapi.service
-            systemctl restart portfolio-admindashboard.service
-
-            systemctl status portfolio-clientapi.service --no-pager -l
-            systemctl status portfolio-admindashboard.service --no-pager -l
-
-            # ====== Reload nginx ======
-            nginx -t && systemctl reload nginx
-
-            echo "✅ Deploy done"
-          EOF
+          # ====== Restart services ======
+          echo "Restarting services..."
+          systemctl restart portfolio-clientapi.service
+          systemctl restart portfolio-admindashboard.service
+          systemctl status portfolio-clientapi.service --no-pager -l
+          systemctl status portfolio-admindashboard.service --no-pager -l
+          
+          # ====== Reload nginx ======
+          nginx -t && systemctl reload nginx
+          echo "✅ Deploy done"
+        EOF
