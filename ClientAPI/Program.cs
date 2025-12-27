@@ -14,7 +14,8 @@ namespace ClientAPI
             var builder = WebApplication.CreateBuilder(args);
            
             builder.Services.AddDbContext<PortfolioDbContext>(options =>
-            options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+            options.UseSqlServer(
+                builder.Configuration.GetConnectionString("DefaultConnectionString")));
 
             builder.Services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<PortfolioDbContext>();
@@ -22,7 +23,7 @@ namespace ClientAPI
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+            //builder.Services.AddOpenApi();
 
             builder.Services.AddScoped<IContactFormService, ContactFormService>();
             builder.Services.AddScoped<IProjectService, ProjectService>();
@@ -30,19 +31,22 @@ namespace ClientAPI
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowAll", policy =>
+                options.AddPolicy("FrontendOnly", policy =>
                 {
-                    policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                    policy.WithOrigins("https://abdofathy.cloud", "http://localhost:4200")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
                 });
             });
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-            }
+            //if (app.Environment.IsDevelopment())
+            //{
+            //    app.MapOpenApi();
+            //}
 
             app.UseHttpsRedirection();
 

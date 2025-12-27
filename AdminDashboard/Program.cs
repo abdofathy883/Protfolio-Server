@@ -18,7 +18,7 @@ namespace AdminDashboard
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddDbContext<PortfolioDbContext>(options =>
-            options.UseSqlite(builder.Configuration
+            options.UseSqlServer(builder.Configuration
             .GetConnectionString("DefaultConnectionString")));
 
             //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<PortfolioDbContext>();
