@@ -24,9 +24,9 @@ jobs:
           set -e
 
             # ====== Repo folder ======
-            APP_DIR="/var/www/portfolio-backend"
-            API_OUT="/var/www/portfolio-backend-out/clientapi"
-            ADMIN_OUT="/var/www/portfolio-backend-out/admindashboard"
+            APP_DIR="/var/www/portfolio-back"
+            API_OUT="/var/www/portfolio-back-out/ClientAPI"
+            ADMIN_OUT="/var/www/portfolio-back-out/AdminDashboard"
 
             mkdir -p "$APP_DIR"
             cd "$APP_DIR
