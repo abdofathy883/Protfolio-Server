@@ -1,7 +1,7 @@
 ﻿using Core.DTOs;
 using Core.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace ClientAPI.Controllers
 {
@@ -9,21 +9,29 @@ namespace ClientAPI.Controllers
     [ApiController]
     public class ContactFormController : ControllerBase
     {
-        private readonly IContactFormService formService;
+        private readonly IContactFormService contactService;
         public ContactFormController(IContactFormService service)
         {
-            formService = service;
+            contactService = service;
         }
 
+        [EnableRateLimiting("contact-limit")]
         [HttpPost]
-        public async Task<IActionResult> AddNewEntry(ContactDTO contactDTO)
+        public async Task<IActionResult> Submit(ContactDTO newEntryDTO)
         {
-            if (contactDTO is null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            var result = await formService.AddNewEntry(contactDTO);
-            
+            if (!string.IsNullOrEmpty(newEntryDTO.Website))
+                return BadRequest("Spam Detected");
+
+            var isHuman = await contactService.VerifyTokenAsync(newEntryDTO.RecaptchaToken);
+
+            if (!isHuman)
+                return BadRequest("Spam Detected");
+
+            var result = await contactService.AddNewEntry(newEntryDTO);
             return Ok(result);
-        } 
+        }
     }
 }

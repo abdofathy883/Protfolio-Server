@@ -7,5 +7,7 @@
         public string? Email { get; set; }
         public string? Message { get; set; }
         public DateTime TimeStamp { get; set; }
+        public string? Website { get; set; }
+        public string RecaptchaToken { get; set; }
     }
 }

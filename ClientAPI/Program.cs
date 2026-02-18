@@ -1,8 +1,10 @@
 using Core.Interfaces;
 using Core.Models;
+using Core.Settings;
 using Infrastructure.Data;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClientAPI
@@ -19,13 +21,16 @@ namespace ClientAPI
 
             builder.Services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<PortfolioDbContext>();
+
+            builder.Services.Configure<RecaptchaSeetings>(builder.Configuration.GetSection("Recaptcha"));
+
             // Add services to the container.
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
-            builder.Services.AddScoped<IContactFormService, ContactFormService>();
+            builder.Services.AddHttpClient<IContactFormService, ContactFormService>();
             builder.Services.AddScoped<IProjectService, ProjectService>();
 
 
@@ -37,6 +42,16 @@ namespace ClientAPI
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials();
+                });
+            });
+
+            builder.Services.AddRateLimiter(options =>
+            {
+                options.AddFixedWindowLimiter("contact-limit", config =>
+                {
+                    config.PermitLimit = 5;
+                    config.Window = TimeSpan.FromMinutes(1);
+                    config.QueueLimit = 0;
                 });
             });
 

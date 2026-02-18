@@ -5,7 +5,6 @@ using Infrastructure.Data;
 using Infrastructure.Data.DbSeeder;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -21,11 +20,6 @@ namespace AdminDashboard
             options.UseSqlServer(builder.Configuration
             .GetConnectionString("DefaultConnectionString")));
 
-            //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<PortfolioDbContext>();
-
-            //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //    .AddEntityFrameworkStores<PortfolioDbContext>();
-
             builder.Services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<PortfolioDbContext>()
                 .AddDefaultTokenProviders();
@@ -34,22 +28,12 @@ namespace AdminDashboard
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            //builder.Services.AddRazorPages();
 
             builder.Services.AddRazorPages(options =>
             {
-                //options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "");
-                //options.Conventions.AuthorizeFolder("/", "RequireAuth");
                 options.Conventions.AllowAnonymousToPage("/Account/Login");
                 options.Conventions.AllowAnonymousToPage("/Account/AccessDenied");
             });
-
-            //builder.Services.AddAuthorization(options =>
-            //{
-            //    options.FallbackPolicy = new AuthorizationPolicyBuilder()
-            //        .RequireAuthenticatedUser()
-            //        .Build();
-            //});
 
             builder.Services.AddAuthentication(options =>
             {
