@@ -31,6 +31,7 @@ namespace ClientAPI
             builder.Services.AddOpenApi();
 
             builder.Services.AddHttpClient<IContactFormService, ContactFormService>();
+            builder.Services.AddScoped<MediaUploadService>();
             builder.Services.AddScoped<IProjectService, ProjectService>();
 
 
@@ -38,7 +39,7 @@ namespace ClientAPI
             {
                 options.AddPolicy("FrontendOnly", policy =>
                 {
-                    policy.WithOrigins("https://abdofathy.cloud", "http://localhost:4200")
+                    policy.WithOrigins("https://abdofathy.cloud", "http://localhost:4200", "http://127.0.0.1:4300")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials();
@@ -67,7 +68,7 @@ namespace ClientAPI
 
             app.UseAuthorization();
 
-            app.UseCors("AllowAll");
+            app.UseCors("FrontendOnly");
             app.MapControllers();
 
             app.Run();
