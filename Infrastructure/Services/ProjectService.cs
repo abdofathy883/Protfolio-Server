@@ -150,7 +150,9 @@ namespace Infrastructure.Services
                 Description = t.Description,
                 Client = t.Client,
                 Problem = t.Problem,
-                Solution = t.Solution
+                Solution = t.Solution,
+                ImageAltText = t.ImageAltText,
+                VideoAltText = t.VideoAltText
             }).ToList() ?? new List<ProjectTranslationDto>(),
             LiveUrl = p.LiveUrl,
             DemoUrl = p.DemoUrl

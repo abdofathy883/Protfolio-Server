@@ -132,7 +132,7 @@ jobs:
           dotnet ef database update \
             --project Infrastructure/Infrastructure.csproj \
             --startup-project ClientAPI/ClientAPI.csproj \
-            --configuration Release
+            --configuration Release \
             --connection "${{ secrets.DB_CONNECTION_STRING }}"
 
           # ====== Publish to temp dirs (services still running) ======

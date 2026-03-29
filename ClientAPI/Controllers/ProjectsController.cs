@@ -15,7 +15,7 @@ namespace ClientAPI.Controllers
             projectService = service;
         }
 
-        [HttpGet]
+        [HttpGet("{lang}")]
         public async Task<IActionResult> GetAllAsync(Language lang)
         {
             var projects = await projectService.GetAll(lang);
