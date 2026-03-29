@@ -14,7 +14,8 @@ namespace Infrastructure.Data
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<ContactForm> ContactEntries { get; set; }
         public DbSet<Project> Projects { get; set; }
-        public DbSet<ProjectImage> ProjectImages { get; set; }
+        public DbSet<ProjectTranslation> ProjectTranslations { get; set; }
         public DbSet<Technology> Technologies { get; set; }
+        public DbSet<SeoContent> SeoContents { get; set; }
     }
 }

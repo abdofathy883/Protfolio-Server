@@ -26,10 +26,10 @@ namespace ClientAPI.Controllers
             return Ok(projects);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id, Language lang)
+        [HttpGet("{slug}/{lang}")]
+        public async Task<IActionResult> GetBySlug(string slug, Language lang)
         {
-            var project = await projectService.GetById(id, lang);
+            var project = await projectService.GetBySlug(slug, lang);
 
             if (project is null)
                 return NotFound();

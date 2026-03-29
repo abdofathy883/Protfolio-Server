@@ -75,10 +75,13 @@ namespace AdminDashboard
 
             var app = builder.Build();
 
+            // Enable Developer Exception Page unconditionally for debugging purposes
+            app.UseDeveloperExceptionPage();
+
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error");
+                // app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }

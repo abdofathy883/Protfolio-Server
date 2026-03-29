@@ -58,6 +58,9 @@ namespace ClientAPI
 
             var app = builder.Build();
 
+            // Enable Developer Exception Page unconditionally for debugging purposes
+            app.UseDeveloperExceptionPage();
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -65,7 +68,6 @@ namespace ClientAPI
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
 
             app.UseCors("FrontendOnly");

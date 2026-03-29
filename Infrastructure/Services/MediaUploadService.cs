@@ -20,7 +20,7 @@ namespace Infrastructure.Services
                 Directory.CreateDirectory(uploadsFolder);
 
             var sanitizedProjectName = string.Join("_", projectTitle.Split(Path.GetInvalidFileNameChars()));
-            var fileNameWithoutExt = $"{sanitizedProjectName}_Abdo Fathy";
+            var fileNameWithoutExt = $"{sanitizedProjectName}_Abdo_Fathy";
             var webpFileName = fileNameWithoutExt + ".webp";
             var webpFilePath = Path.Combine(uploadsFolder, webpFileName);
 
@@ -41,7 +41,7 @@ namespace Infrastructure.Services
 
             var sanitizedProjectTitle = string.Join("_", projectTitle.Split(Path.GetInvalidFileNameChars()));
             var fileExtention = Path.GetExtension(video.FileName).ToLower();
-            var videoName = $"{sanitizedProjectTitle}_Abdo Fathy{fileExtention}";
+            var videoName = $"{sanitizedProjectTitle}_Abdo_Fathy{fileExtention}";
             var filePath = Path.Combine(uploadsFolder, videoName);
 
             using (var stream = new FileStream(filePath, FileMode.Create))

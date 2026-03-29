@@ -25,10 +25,10 @@ namespace ClientAPI.Controllers
             if (!string.IsNullOrEmpty(newEntryDTO.Website))
                 return BadRequest("Spam Detected");
 
-            var isHuman = await contactService.VerifyTokenAsync(newEntryDTO.RecaptchaToken);
+            //var isHuman = await contactService.VerifyTokenAsync(newEntryDTO.RecaptchaToken);
 
-            if (!isHuman)
-                return BadRequest("Spam Detected");
+            //if (!isHuman)
+            //    return BadRequest("Spam Detected");
 
             var result = await contactService.AddNewEntry(newEntryDTO);
             return Ok(result);

@@ -1,4 +1,5 @@
-﻿@model Core.DTOs.CreateProjectDTO
+@model Core.DTOs.Projects.CreateProjectDTO
+@using Core.Enums
 
 @{
     ViewData["Title"] = "Create New Project";
@@ -9,131 +10,154 @@
 <h4>Project</h4>
 <hr />
 
-<form asp-action="Create" enctype="multipart/form-data">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="mb-3">
-        <label asp-for="Title" class="form-label"></label>
-        <small class="text-danger">*</small>
-        <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Description" class="form-label"></label>
-        <small class="text-danger">*</small>
-        <input asp-for="Description" class="form-control" />
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="VideoFile" class="form-label"></label>
-        <input asp-for="VideoFile" type="file" accept="video/*" class="form-control" />
-        <span asp-validation-for="VideoFile" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Project Images</label>
-        <small class="text-danger">*</small>
-
-        <div id="images-container">
-            <div class="image-row border rounded p-3 mb-2">
-                <div class="row g-2 align-items-center">
-                    <div class="col-md-6">
-                        <input type="file" name="Images[0].ImageFile" accept="image/*" class="form-control" required>
-                    </div>
-                    <div class="col-md-4">
-                        <input type="text" name="Images[0].AltText" placeholder="Alt text (optional)" class="form-control">
-                    </div>
-                    <div class="col-md-2 form-check form-switch mb-3">
-                        <input class="form-check-input" type="checkbox" role="switch" name="Images[0].IsFeatured" value="true" id="img0-featured">
-                        <label class="form-check-label" for="img0-featured">Featured</label>
-                        <input type="hidden" name="Images[0].IsFeatured" value="false">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <button type="button" id="add-image" class="btn btn-outline-secondary btn-sm">Add another image</button>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Technologies" class="form-label"></label>
-        <small class="text-danger">*</small>
-        <select asp-for="Technologies" class="form-control" asp-items="ViewBag.Technologies" multiple></select>
-        <span asp-validation-for="Technologies" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Client" class="form-label"></label>
-        <input asp-for="Client" class="form-control" />
-        <span asp-validation-for="Client" class="text-danger"></span>
-    </div>
-
-
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="All" class="text-danger"></div>
+    
+    <!-- Base Project Fields -->
     <div class="row mb-3">
-        <div class="col">
-            <label asp-for="Problem" class="form-label"></label>
-            <small class="text-danger">*</small>
-            <input asp-for="Problem" class="form-control" />
-            <span asp-validation-for="Problem" class="text-danger"></span>
+        <div class="col-md-6">
+            <label asp-for="Slug" class="form-label"></label>
+            <input asp-for="Slug" class="form-control" />
+            <span asp-validation-for="Slug" class="text-danger"></span>
         </div>
-        <div class="col">
-            <label asp-for="Solution" class="form-label"></label>
-            <small class="text-danger">*</small>
-            <input asp-for="Solution" class="form-control" />
-            <span asp-validation-for="Solution" class="text-danger"></span>
+        <div class="col-md-6">
+            <label asp-for="PublishedAt" class="form-label"></label>
+            <input asp-for="PublishedAt" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            <span asp-validation-for="PublishedAt" class="text-danger"></span>
         </div>
     </div>
-
+    
     <div class="row mb-3">
-        <div class="col">
+        <div class="col-md-6">
             <label asp-for="LiveUrl" class="form-label"></label>
             <input asp-for="LiveUrl" class="form-control" />
             <span asp-validation-for="LiveUrl" class="text-danger"></span>
         </div>
-        <div class="col">
+        <div class="col-md-6">
             <label asp-for="DemoUrl" class="form-label"></label>
             <input asp-for="DemoUrl" class="form-control" />
             <span asp-validation-for="DemoUrl" class="text-danger"></span>
         </div>
     </div>
 
-    <div class="form-check form-switch mb-3">
-        <input class="form-check-input" asp-for="IsFeatured" type="checkbox" role="switch" id="switchCheckDefault">
-        <label class="form-check-label" for="switchCheckDefault">Display As Featured</label>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label asp-for="ImageFile" class="form-label">Main Image</label>
+            <input asp-for="ImageFile" type="file" accept="image/*" class="form-control" />
+            <span asp-validation-for="ImageFile" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="VideoFile" class="form-label">Main Video file</label>
+            <input asp-for="VideoFile" type="file" accept="video/*" class="form-control" />
+            <span asp-validation-for="VideoFile" class="text-danger"></span>
+        </div>
     </div>
+
+    <div class="mb-3">
+        <label asp-for="Technologies" class="form-label"></label>
+        <small class="text-danger">*</small>
+        <select asp-for="Technologies" class="form-control" asp-items="ViewBag.Technologies" multiple></select>
+        <span asp-validation-for="Technologies" class="text-danger"></span>
+    </div>
+
+    <!-- Translations Tabs -->
+    <h4 class="mt-4">Translations</h4>
+    <ul class="nav nav-tabs" id="translationsTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="en-tab" data-bs-toggle="tab" data-bs-target="#en" type="button" role="tab" aria-controls="en" aria-selected="true">English</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="ar-tab" data-bs-toggle="tab" data-bs-target="#ar" type="button" role="tab" aria-controls="ar" aria-selected="false">Arabic</button>
+        </li>
+    </ul>
+    
+    <div class="tab-content border border-top-0 p-3 mb-4" id="translationsTabContent">
+        <!-- English Translation -->
+        <div class="tab-pane fade show active" id="en" role="tabpanel" aria-labelledby="en-tab">
+            <input type="hidden" name="Translations[0].Language" value="@((int)Language.en)" />
+            
+            <div class="mb-3">
+                <label class="form-label">Title (English) <span class="text-danger">*</span></label>
+                <input name="Translations[0].Title" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Description (English) <span class="text-danger">*</span></label>
+                <textarea name="Translations[0].Description" class="form-control" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Client (English)</label>
+                <input name="Translations[0].Client" class="form-control" />
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Problem (English) <span class="text-danger">*</span></label>
+                    <textarea name="Translations[0].Problem" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Solution (English) <span class="text-danger">*</span></label>
+                    <textarea name="Translations[0].Solution" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Image Alt Text (English)</label>
+                    <input name="Translations[0].ImageAltText" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Video Alt Text (English)</label>
+                    <input name="Translations[0].VideoAltText" class="form-control" />
+                </div>
+            </div>
+        </div>
+        
+        <!-- Arabic Translation -->
+        <div class="tab-pane fade" id="ar" role="tabpanel" aria-labelledby="ar-tab" dir="rtl">
+            <input type="hidden" name="Translations[1].Language" value="@((int)Language.ar)" />
+            
+            <div class="mb-3">
+                <label class="form-label">Title (Arabic) <span class="text-danger">*</span></label>
+                <input name="Translations[1].Title" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Description (Arabic) <span class="text-danger">*</span></label>
+                <textarea name="Translations[1].Description" class="form-control" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Client (Arabic)</label>
+                <input name="Translations[1].Client" class="form-control" />
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Problem (Arabic) <span class="text-danger">*</span></label>
+                    <textarea name="Translations[1].Problem" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Solution (Arabic) <span class="text-danger">*</span></label>
+                    <textarea name="Translations[1].Solution" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Image Alt Text (Arabic)</label>
+                    <input name="Translations[1].ImageAltText" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Video Alt Text (Arabic)</label>
+                    <input name="Translations[1].VideoAltText" class="form-control" />
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div>
         <input type="submit" value="Create" class="btn btn-primary" />
     </div>
 </form>
 
-
-<div>
+<div class="mt-3">
     <a asp-action="Index">Back to List</a>
 </div>
-
-<script>
-    (function () {
-      let idx = 1;
-      document.getElementById('add-image').addEventListener('click', function () {
-        const container = document.getElementById('images-container');
-        const row = document.createElement('div');
-        row.className = 'image-row border rounded p-3 mb-2';
-        row.innerHTML = `
-          <div class="row g-2 align-items-center">
-            <div class="col-md-6">
-              <input type="file" name="Images[${idx}].ImageFile" accept="image/*" class="form-control" required>
-            </div>
-            <div class="col-md-4">
-              <input type="text" name="Images[${idx}].AltText" placeholder="Alt text (optional)" class="form-control">
-            </div>
-            
-            <div class="col-md-2 form-check form-switch mb-3">
-                <input class="form-check-input" type="checkbox" role="switch" name="Images[${idx}].IsFeatured" value="true" id="img${idx}-featured">
-                <label class="form-check-label" for="img${idx}-featured">Featured</label>
-                <input type="hidden" name="Images[${idx}].IsFeatured" value="false">
-            </div>
-          </div>`;
-        container.appendChild(row);
-        idx++;
-      });
-    })();
-</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

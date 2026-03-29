@@ -76,18 +76,12 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProjectID = table.Column<int>(type: "int", nullable: false),
-                    Language = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Video = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Technologies = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Client = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Problem = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Solution = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Slug = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PublishedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VideoLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LiveUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DemoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsFeatured = table.Column<bool>(type: "bit", nullable: false)
+                    DemoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -95,17 +89,27 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Technologies",
+                name: "SeoContents",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IconUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Route = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Language = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Keywords = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OgTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OgDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OgImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CanonicalUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Robots = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Technologies", x => x.Id);
+                    table.PrimaryKey("PK_SeoContents", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -215,25 +219,50 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProjectImages",
+                name: "ProjectTranslations",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AltText = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsFeatured = table.Column<bool>(type: "bit", nullable: false),
-                    ProjectId = table.Column<int>(type: "int", nullable: false)
+                    ProjectID = table.Column<int>(type: "int", nullable: false),
+                    Language = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageAltText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VideoAltText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Client = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Problem = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Solution = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectImages", x => x.Id);
+                    table.PrimaryKey("PK_ProjectTranslations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProjectImages_Projects_ProjectId",
-                        column: x => x.ProjectId,
+                        name: "FK_ProjectTranslations_Projects_ProjectID",
+                        column: x => x.ProjectID,
                         principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Technologies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IconUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProjectId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Technologies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Technologies_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -276,8 +305,13 @@ namespace Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectImages_ProjectId",
-                table: "ProjectImages",
+                name: "IX_ProjectTranslations_ProjectID",
+                table: "ProjectTranslations",
+                column: "ProjectID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Technologies_ProjectId",
+                table: "Technologies",
                 column: "ProjectId");
         }
 
@@ -303,7 +337,10 @@ namespace Infrastructure.Migrations
                 name: "ContactEntries");
 
             migrationBuilder.DropTable(
-                name: "ProjectImages");
+                name: "ProjectTranslations");
+
+            migrationBuilder.DropTable(
+                name: "SeoContents");
 
             migrationBuilder.DropTable(
                 name: "Technologies");

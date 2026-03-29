@@ -1,5 +1,5 @@
-﻿
 using Core.DTOs;
+using Core.DTOs.Projects;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -27,7 +27,7 @@ namespace AdminDashboard.Controllers
         // GET: Projects
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Projects.ToListAsync());
+            return View(await _context.Projects.Include(p => p.Translations).ToListAsync());
         }
 
         // GET: Projects/Details/5
@@ -68,6 +68,8 @@ namespace AdminDashboard.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RequestSizeLimit(200_000_000)]
+        [RequestFormLimits(MultipartBodyLengthLimit = 200_000_000)]
         public async Task<IActionResult> Create([FromForm] CreateProjectDTO project)
         {
             if (!ModelState.IsValid)
@@ -84,7 +86,7 @@ namespace AdminDashboard.Controllers
                 return View(project);
             }
 
-            var created = await projectService.CreateAsync(project);
+            var created = await projectService.Create(project);
             return RedirectToAction(nameof(Index));
 
         }
@@ -119,7 +121,7 @@ namespace AdminDashboard.Controllers
             }
 
             var project = await _context.Projects
-                .Include(p => p.Images)
+                .Include(p => p.Translations)
                 .FirstOrDefaultAsync(p => p.Id == id);
             if (project == null)
             {
@@ -131,40 +133,40 @@ namespace AdminDashboard.Controllers
         // POST: Projects/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [FromForm] UpdateProjectDTO project)
-        {
-            if (id != project.Id)
-            {
-                return NotFound();
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [FromForm] UpdateProjectDTO project)
+        //{
+        //    if (id != project.Id)
+        //    {
+        //        return NotFound();
+        //    }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var updated = await projectService.UpdateAsync(project);
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (DbUpdateConcurrencyException ex)
-                {
-                    ModelState.AddModelError("", "An error occurred while updating the project: " + ex.Message);
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            var updated = await projectService.UpdateAsync(project);
+        //            return RedirectToAction(nameof(Index));
+        //        }
+        //        catch (DbUpdateConcurrencyException ex)
+        //        {
+        //            ModelState.AddModelError("", "An error occurred while updating the project: " + ex.Message);
 
-                    var techNames = await _context.Technologies
-                        .AsNoTracking()
-                        .Select(t => t.Name)
-                        .ToListAsync();
+        //            var techNames = await _context.Technologies
+        //                .AsNoTracking()
+        //                .Select(t => t.Name)
+        //                .ToListAsync();
 
-                    ViewBag.Technologies = techNames
-                        .Select(n => new SelectListItem { Value = n, Text = n })
-                        .ToList();
+        //            ViewBag.Technologies = techNames
+        //                .Select(n => new SelectListItem { Value = n, Text = n })
+        //                .ToList();
 
-                    return View(project);
-                }
-            }
-            return View(project);
-        }
+        //            return View(project);
+        //        }
+        //    }
+        //    return View(project);
+        //}
 
         // GET: Projects/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -175,6 +177,7 @@ namespace AdminDashboard.Controllers
             }
 
             var project = await _context.Projects
+                .Include(p => p.Translations)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (project == null)
             {
