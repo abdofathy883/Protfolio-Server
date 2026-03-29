@@ -128,12 +128,12 @@ jobs:
           # ====== Apply EF Migrations ======  👈 added here
           echo "Applying EF migrations..."
           export PATH="$PATH:/root/.dotnet/tools"
-          export ASPNETCORE_ENVIRONMENT=Production
           dotnet tool install --global dotnet-ef || true
           dotnet ef database update \
             --project Infrastructure/Infrastructure.csproj \
             --startup-project ClientAPI/ClientAPI.csproj \
             --configuration Release
+            --connection "${{ secrets.DB_CONNECTION_STRING }}"
 
           # ====== Publish to temp dirs (services still running) ======
           echo "Publishing ClientAPI..."
