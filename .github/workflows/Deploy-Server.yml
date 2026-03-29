@@ -41,10 +41,23 @@ jobs:
           git reset --hard origin/master
 
           # ====== Publish API ======
+          #echo "Publishing ClientAPI..."
+          #dotnet publish ClientAPI/ClientAPI.csproj -c Release -o "$API_OUT"
+
+          # ====== Publish Admin Dashboard ======
+          # echo "Publishing AdminDashboard..."
+          # dotnet publish AdminDashboard/AdminDashboard.csproj -c Release -o "$ADMIN_OUT"
+
+          # ====== Restart services ======
+          echo "Restarting services..."
+          systemctl stop portfolio-clientapi.service
+          systemctl stop portfolio-admindashboard.service
+
+          # ====== Publish API ======
           echo "Publishing ClientAPI..."
           dotnet publish ClientAPI/ClientAPI.csproj -c Release -o "$API_OUT"
 
-          # ====== Publish Admin Dashboard ======
+          # ====== Publish AdminDashboard ======
           echo "Publishing AdminDashboard..."
           dotnet publish AdminDashboard/AdminDashboard.csproj -c Release -o "$ADMIN_OUT"
 
