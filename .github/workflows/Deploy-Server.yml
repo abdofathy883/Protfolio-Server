@@ -40,6 +40,14 @@ jobs:
           git fetch origin master
           git reset --hard origin/master
 
+          # ====== Apply EF Migrations ======
+          export PATH="$PATH:/root/.dotnet/tools"
+          dotnet tool install --global dotnet-ef
+          dotnet ef database update \
+            --project Infrastructure/Infrastructure.csproj \
+            --startup-project ClientAPI/ClientAPI.csproj \
+            --configuration Release
+
           # ====== Publish API ======
           #echo "Publishing ClientAPI..."
           #dotnet publish ClientAPI/ClientAPI.csproj -c Release -o "$API_OUT"
