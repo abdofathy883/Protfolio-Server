@@ -128,6 +128,7 @@ jobs:
           # ====== Apply EF Migrations ======  👈 added here
           echo "Applying EF migrations..."
           export PATH="$PATH:/root/.dotnet/tools"
+          export ASPNETCORE_ENVIRONMENT=Production
           dotnet tool install --global dotnet-ef || true
           dotnet ef database update \
             --project Infrastructure/Infrastructure.csproj \
