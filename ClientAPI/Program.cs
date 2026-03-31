@@ -37,12 +37,22 @@ namespace ClientAPI
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("FrontendOnly", policy =>
+                options.AddPolicy("prod", policy =>
                 {
-                    policy.WithOrigins("https://abdofathy.cloud", "http://localhost:4200", "http://127.0.0.1:4300")
+                    policy.WithOrigins("https://abdofathy.cloud")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials();
+                });
+            });
+            
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("dev", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
                 });
             });
 
@@ -65,12 +75,13 @@ namespace ClientAPI
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+                app.UseCors("dev");
             }
 
             app.UseHttpsRedirection();
+            app.UseCors("prod");
             app.UseAuthorization();
 
-            app.UseCors("FrontendOnly");
             app.MapControllers();
 
             app.Run();
