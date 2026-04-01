@@ -33,7 +33,7 @@ namespace Infrastructure.Services
                 PhoneNumber = newEntry.PhoneNumber,
                 Email = newEntry.Email,
                 Message = newEntry.Message,
-                TimeStamp = newEntry.TimeStamp
+                TimeStamp = DateTime.UtcNow
             };
 
             await context.AddAsync(entry);

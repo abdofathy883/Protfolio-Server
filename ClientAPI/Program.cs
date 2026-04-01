@@ -44,10 +44,7 @@ namespace ClientAPI
                     .AllowAnyHeader()
                     .AllowCredentials();
                 });
-            });
-            
-            builder.Services.AddCors(options =>
-            {
+                
                 options.AddPolicy("dev", policy =>
                 {
                     policy.AllowAnyOrigin()

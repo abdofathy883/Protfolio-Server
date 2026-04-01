@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Webp;
 
@@ -7,15 +8,18 @@ namespace Infrastructure.Services
     public class MediaUploadService
     {
         private readonly IHttpContextAccessor contextAccessor;
-        public MediaUploadService(IHttpContextAccessor httpContext)
+        private readonly IWebHostEnvironment _env;
+        public MediaUploadService(IHttpContextAccessor httpContext, IWebHostEnvironment env)
         {
             contextAccessor = httpContext;
+            _env = env;
         }
         public record MediaUploadResult(string Url, string PhysicalPath);
 
         public async Task<MediaUploadResult> UploadImageWithPath(IFormFile image, string projectTitle)
         {
-            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+            //var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+            var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
             if (!Directory.Exists(uploadsFolder))
                 Directory.CreateDirectory(uploadsFolder);
 
