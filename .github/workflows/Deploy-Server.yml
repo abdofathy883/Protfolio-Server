@@ -43,6 +43,14 @@ jobs:
           git fetch origin master
           git reset --hard origin/master
 
+          # ====== Clean generated build files ======
+          echo "Cleaning build artifacts..."
+          find . -type d \( -name bin -o -name obj \) -prune -exec rm -rf {} +
+
+          # ====== Restore dependencies ======
+          echo "Restoring .NET dependencies..."
+          dotnet restore
+
           # ====== Apply EF Migrations ======  👈 added here
           echo "Applying EF migrations..."
           export PATH="$PATH:/root/.dotnet/tools"
