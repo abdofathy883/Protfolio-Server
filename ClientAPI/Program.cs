@@ -1,4 +1,4 @@
-using Core.Interfaces;
+using Application.Interfaces;
 using Core.Models;
 using Core.Settings;
 using Infrastructure.Data;
@@ -33,6 +33,7 @@ namespace ClientAPI
             builder.Services.AddHttpClient<IContactFormService, ContactFormService>();
             builder.Services.AddScoped<MediaUploadService>();
             builder.Services.AddScoped<IProjectService, ProjectService>();
+            builder.Services.AddScoped<ISeoService, SeoService>();
 
 
             builder.Services.AddCors(options =>

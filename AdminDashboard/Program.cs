@@ -1,4 +1,4 @@
-using Core.Interfaces;
+using Application.Interfaces;
 using Core.Models;
 using Core.Settings;
 using Infrastructure.Data;
@@ -67,9 +67,9 @@ namespace AdminDashboard
 
             builder.Services.AddScoped<IProjectService, ProjectService>();
             builder.Services.AddScoped<ITechService, TechService>();
+            builder.Services.AddScoped<ISeoService, SeoService>();
             builder.Services.AddScoped<MediaUploadService>();
             builder.Services.AddTransient<IEmailSender, EmailService>();
-            builder.Services.AddSingleton<LaTexEngine>();
 
             builder.Services.AddHttpContextAccessor();
 

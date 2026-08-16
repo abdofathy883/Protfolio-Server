@@ -1,5 +1,5 @@
-﻿using Core.DTOs;
-using Core.Interfaces;
+﻿using Application.DTOs;
+using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 

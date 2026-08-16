@@ -1,0 +1,91 @@
+﻿@using Core.Enums
+@model Application.DTOs.Seo.CreateSeoContentDTO
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>SeoContent</h4>
+<hr />
+<div class="row">
+    <form asp-action="Create" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+                <div class="col-12 col-md-4 mb-3">
+                    <label asp-for="Route" class="form-label"></label>
+                    <input asp-for="Route" class="form-control" />
+                    <span asp-validation-for="Route" class="text-danger"></span>
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                    <label asp-for="Language" class="form-label"></label>
+                    <select asp-for="Language" asp-items="Html.GetEnumSelectList<Language>()" class="form-control"></select>
+                    <span asp-validation-for="Language" class="text-danger"></span>
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                    <label asp-for="Title" class="form-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+            </div>
+        
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            @* <input asp-for="Description" class="form-control" /> *@
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-6 mb-3">
+                <label asp-for="Keywords" class="form-label"></label>
+                <input asp-for="Keywords" class="form-control" />
+                <span asp-validation-for="Keywords" class="text-danger"></span>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+                <label asp-for="OgTitle" class="form-label"></label>
+                <input asp-for="OgTitle" class="form-control" />
+                <span asp-validation-for="OgTitle" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="OgDescription" class="form-label"></label>
+            <textarea asp-for="OgDescription" class="form-control"></textarea>
+            @* <input asp-for="OgDescription" class="form-control" /> *@
+            <span asp-validation-for="OgDescription" class="text-danger"></span>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-6 mb-3">
+                <label asp-for="OgImage" class="form-label"></label>
+                <input asp-for="OgImage" type="file" accept="image" class="form-control" />
+                <span asp-validation-for="OgImage" class="text-danger"></span>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+                <label asp-for="CanonicalUrl" class="form-label"></label>
+                <input asp-for="CanonicalUrl" class="form-control" />
+                <span asp-validation-for="CanonicalUrl" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Robots" class="form-label"></label>
+            <input asp-for="Robots" class="form-control" />
+            <span asp-validation-for="Robots" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

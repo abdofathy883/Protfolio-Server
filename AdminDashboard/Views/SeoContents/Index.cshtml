@@ -1,0 +1,101 @@
+﻿@model IEnumerable<Core.Models.SeoContent>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="content-table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Route)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Language)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Keywords)
+            </th>
+            @* <th>
+                @Html.DisplayNameFor(model => model.OgTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OgDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OgImage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CanonicalUrl)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.Robots)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            <tr class="clickable-row" data-href="@Url.Action("Edit", "SeoContents", new { id = item.Id })" style="cursor: pointer;">
+            <td>
+                @Html.DisplayFor(modelItem => item.Route)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Language)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Keywords)
+            </td>
+            @* <td>
+                @Html.DisplayFor(modelItem => item.OgTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OgDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OgImage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CanonicalUrl)
+            </td> *@
+            <td>
+                @Html.DisplayFor(modelItem => item.Robots)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,10 +1,9 @@
-using Core.DTOs;
-using Core.DTOs.Projects;
+using Application.DTOs;
+using Application.DTOs.Projects;
+using Application.Interfaces;
 using Core.Enums;
-using Core.Interfaces;
 using Core.Models;
 using Infrastructure.Data;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Services
@@ -92,7 +91,6 @@ namespace Infrastructure.Services
 
                 item = new Project
                 {
-                    Slug = CreateSlug(dto.Slug ?? dto.Translations.First().Title),
                     ImageLink = featuredImagURL,
                     VideoLink = videoUrl,
                     PublishedAt = DateTime.UtcNow,
@@ -100,6 +98,7 @@ namespace Infrastructure.Services
                     Translations = dto.Translations.Select(t => new ProjectTranslation
                     {
                         Title = t.Title,
+                        Slug = CreateSlug(dto.Slug ?? dto.Translations.First().Title),
                         Description = t.Description,
                         Language = t.Language,
                         Client = t.Client,
@@ -131,7 +130,6 @@ namespace Infrastructure.Services
         private ProjectDTO MapToProjectDTO(Project p) => new()
         {
             Id = p.Id,
-            Slug = p.Slug,
             PublishedAt = p.PublishedAt,
             ImageLink = p.ImageLink,
             VideoLink = p.VideoLink,
@@ -145,6 +143,7 @@ namespace Infrastructure.Services
             {
                 Id = t.Id,
                 ProjectID = t.ProjectID,
+                Slug = t.Slug,
                 Language = t.Language,
                 Title = t.Title,
                 Description = t.Description,
@@ -158,15 +157,7 @@ namespace Infrastructure.Services
             DemoUrl = p.DemoUrl
         };
 
-        public async Task<ProjectDTO> GetBySlug(string slug, Language lang)
-        {
-            var project = await context.Projects
-                .Where(p => p.Translations.Any(t => t.Language == lang))
-                .Include(p => p.Translations.Where(t => t.Language == lang))
-                .FirstOrDefaultAsync(p => p.Slug == slug)
-                ?? throw new Exception();
-            return MapToProjectDTO(project);
-        }
+        
 
         private string CreateSlug(string title)
         {

@@ -1,6 +1,5 @@
-﻿using Core.DTOs;
-using Core.DTOs.ContactForm;
-using Core.Interfaces;
+﻿using Application.DTOs;
+using Application.Interfaces;
 using Core.Models;
 using Core.Settings;
 using Infrastructure.Data;

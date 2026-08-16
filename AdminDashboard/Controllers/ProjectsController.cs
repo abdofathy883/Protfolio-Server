@@ -1,6 +1,5 @@
-using Core.DTOs;
-using Core.DTOs.Projects;
-using Core.Interfaces;
+using Application.DTOs.Projects;
+using Application.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
