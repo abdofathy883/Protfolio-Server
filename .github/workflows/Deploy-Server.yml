@@ -54,7 +54,7 @@ jobs:
           # ====== Apply EF Migrations ======  👈 added here
           echo "Applying EF migrations..."
           export PATH="$PATH:/root/.dotnet/tools"
-          dotnet tool install --global dotnet-ef || true
+          # dotnet tool install --global dotnet-ef || true
           dotnet ef migrations add "TestMigration" \
             --project Infrastructure/Infrastructure.csproj \
             --startup-project ClientAPI/ClientAPI.csproj \
