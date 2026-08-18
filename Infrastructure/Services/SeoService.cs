@@ -58,15 +58,15 @@ namespace Infrastructure.Services
             return MapToDto(content);
         }
 
-        public async Task<SeoContentDTO> UpdateSeoContent(CreateSeoContentDTO content)
+        public async Task<SeoContentDTO> UpdateSeoContent(UpdateSeoDto content)
         {
             var existingContent = await context.SeoContents
                 .FirstOrDefaultAsync(x => x.Route == content.Route && x.Language == content.Language);
 
-            if (existingContent == null)
-            {
-                return await CreateSeoContent(content);
-            }
+            //if (existingContent == null)
+            //{
+            //    return await CreateSeoContent(content);
+            //}
 
             existingContent.Title = content.Title;
             existingContent.Description = content.Description;
@@ -83,6 +83,7 @@ namespace Infrastructure.Services
                 existingContent.OgImage = uploadResult.Url;
             }
 
+            context.SeoContents.Update(existingContent);
             await context.SaveChangesAsync();
             return MapToDto(existingContent);
         }

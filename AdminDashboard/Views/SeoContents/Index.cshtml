@@ -27,26 +27,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.Keywords)
             </th>
-            @* <th>
-                @Html.DisplayNameFor(model => model.OgTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OgDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OgImage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CanonicalUrl)
-            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Robots)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedAt)
             </th>
             <th></th>
         </tr>
@@ -69,31 +51,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Keywords)
             </td>
-            @* <td>
-                @Html.DisplayFor(modelItem => item.OgTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OgDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OgImage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CanonicalUrl)
-            </td> *@
             <td>
                 @Html.DisplayFor(modelItem => item.Robots)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <div class="d-flex gap-2">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                </div>
             </td>
         </tr>
 }

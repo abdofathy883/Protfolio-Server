@@ -115,7 +115,9 @@ namespace AdminDashboard
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                await DbSeeder.SeedAsync(services);
+                var dbContext = services.GetRequiredService<PortfolioDbContext>();
+                await dbContext.Database.MigrateAsync();
+                await AuthSeeder.SeedAsync(services);
             }
 
             app.Run();

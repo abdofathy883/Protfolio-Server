@@ -44,21 +44,21 @@ jobs:
           git reset --hard origin/master
 
           # ====== Clean generated build files ======
-          echo "Cleaning build artifacts..."
-          find . -type d \( -name bin -o -name obj \) -prune -exec rm -rf {} +
+          #echo "Cleaning build artifacts..."
+          #find . -type d \( -name bin -o -name obj \) -prune -exec rm -rf {} +
 
           # ====== Restore dependencies ======
-          echo "Restoring .NET dependencies..."
-          dotnet restore
+          #echo "Restoring .NET dependencies..."
+          #dotnet restore
 
           # ====== Apply EF Migrations ======  👈 added here
           echo "Applying EF migrations..."
           export PATH="$PATH:/root/.dotnet/tools"
           # dotnet tool install --global dotnet-ef || true
-          dotnet ef migrations add "TestMigration" \
-            --project Infrastructure/Infrastructure.csproj \
-            --startup-project ClientAPI/ClientAPI.csproj \
-            --configuration Release \
+          #dotnet ef migrations add "TestMigration" \
+          #  --project Infrastructure/Infrastructure.csproj \
+          #  --startup-project ClientAPI/ClientAPI.csproj \
+          #  --configuration Release \
           dotnet ef database update \
             --project Infrastructure/Infrastructure.csproj \
             --startup-project ClientAPI/ClientAPI.csproj \

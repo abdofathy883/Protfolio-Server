@@ -81,17 +81,27 @@ namespace AdminDashboard.Controllers
         // GET: SeoContents/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var seoContent = await _context.SeoContents.FindAsync(id);
-            if (seoContent == null)
+            if (seoContent == null) return NotFound();
+
+            var dto = new UpdateSeoDto
             {
-                return NotFound();
-            }
-            return View(seoContent);
+                Id = seoContent.Id,
+                Route = seoContent.Route,
+                Language = seoContent.Language,
+                Title = seoContent.Title,
+                Description = seoContent.Description,
+                Keywords = seoContent.Keywords,
+                OgTitle = seoContent.OgTitle,
+                OgDescription = seoContent.OgDescription,
+                CanonicalUrl = seoContent.CanonicalUrl,
+                Robots = seoContent.Robots
+                // note: file upload (OgImage) stays null for GET
+            };
+
+            return View(dto);
         }
 
         // POST: SeoContents/Edit/5
@@ -99,31 +109,18 @@ namespace AdminDashboard.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Route,Language,Title,Description,Keywords,OgTitle,OgDescription,OgImage,CanonicalUrl,Robots,CreatedAt,UpdatedAt")] SeoContent seoContent)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Route,Language,Title,Description,Keywords,OgTitle,OgDescription,OgImage,CanonicalUrl,Robots,CreatedAt,UpdatedAt")] UpdateSeoDto seoContent)
         {
-            if (id != seoContent.Id)
-            {
-                return NotFound();
-            }
+            //if (id != seoContent.Id)
+            //{
+            //    return NotFound();
+            //}
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(seoContent);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SeoContentExists(seoContent.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                var result = _seoService.UpdateSeoContent(seoContent);
+                //_context.Add(seoContent);
+                //await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(seoContent);

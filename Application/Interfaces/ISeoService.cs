@@ -7,6 +7,6 @@ namespace Application.Interfaces
     {
         Task<SeoContentDTO> GetContentByRoute(string route, Language language);
         Task<SeoContentDTO> CreateSeoContent(CreateSeoContentDTO newContent);
-        Task<SeoContentDTO> UpdateSeoContent(CreateSeoContentDTO content);
+        Task<SeoContentDTO> UpdateSeoContent(UpdateSeoDto content);
     }
 }
