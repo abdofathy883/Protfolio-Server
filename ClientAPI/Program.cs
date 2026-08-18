@@ -34,6 +34,7 @@ namespace ClientAPI
             builder.Services.AddHttpClient<IContactFormService, ContactFormService>();
             builder.Services.AddScoped<MediaUploadService>();
             builder.Services.AddScoped<IProjectService, ProjectService>();
+            builder.Services.AddScoped<IProjectPublicService, ProjectPublicService>();
             builder.Services.AddScoped<ISeoService, SeoService>();
 
 
