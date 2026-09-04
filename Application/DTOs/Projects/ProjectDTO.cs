@@ -1,3 +1,5 @@
+using Application.DTOs.Technologies;
+
 namespace Application.DTOs.Projects
 {
     public class ProjectDTO

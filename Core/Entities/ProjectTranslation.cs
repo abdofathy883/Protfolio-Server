@@ -1,6 +1,6 @@
 ﻿using Core.Enums;
 
-namespace Core.Models
+namespace Core.Entities
 {
     public class ProjectTranslation
     {
@@ -17,6 +17,7 @@ namespace Core.Models
         public string? Client { get; set; }
         public required string Problem { get; set; }
         public required string Solution { get; set; }
+        public SeoMeta? Seo { get; set; }
 
     }
 }

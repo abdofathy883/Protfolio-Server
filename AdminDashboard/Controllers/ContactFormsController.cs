@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
+using Infrastructure.Persistance;
 
 namespace AdminDashboard.Controllers
 {

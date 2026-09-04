@@ -1,4 +1,4 @@
-﻿using Core.Settings;
+﻿using Core.Options;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using System.Net;

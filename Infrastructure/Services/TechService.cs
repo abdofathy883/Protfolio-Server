@@ -1,7 +1,7 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.Technologies;
 using Application.Interfaces;
-using Core.Models;
-using Infrastructure.Data;
+using Core.Entities;
+using Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Services

@@ -1,8 +1,8 @@
-﻿using Core.Models;
+﻿using Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure.Data.DbSeeder
+namespace Infrastructure.Persistance.DbSeeder.DbSeeder
 {
     public class AuthSeeder
     {

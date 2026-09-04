@@ -1,12 +1,12 @@
 using Application.Interfaces;
-using Core.Models;
-using Core.Settings;
-using Infrastructure.Data;
-using Infrastructure.Data.DbSeeder;
+using Infrastructure.Persistance.DbSeeder;
+using Infrastructure.Persistance;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Core.Options;
+using Core.Entities;
 
 namespace ClientAPI
 {

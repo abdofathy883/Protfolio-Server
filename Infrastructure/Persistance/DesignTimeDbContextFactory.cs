@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace Infrastructure.Data
+namespace Infrastructure.Persistance
 {
     public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<PortfolioDbContext>
     {

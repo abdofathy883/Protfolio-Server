@@ -1,4 +1,4 @@
-﻿namespace Core.Settings
+﻿namespace Core.Options
 {
     public class RecaptchaSeetings
     {

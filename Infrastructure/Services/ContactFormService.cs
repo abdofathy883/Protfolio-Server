@@ -1,8 +1,8 @@
 ﻿using Application.DTOs;
 using Application.Interfaces;
-using Core.Models;
-using Core.Settings;
-using Infrastructure.Data;
+using Core.Entities;
+using Core.Options;
+using Infrastructure.Persistance;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 

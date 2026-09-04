@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Application.Interfaces;
-using Application.DTOs;
+using Infrastructure.Persistance;
+using Application.DTOs.Technologies;
 
 namespace AdminDashboard.Controllers
 {

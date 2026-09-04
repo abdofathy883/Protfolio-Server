@@ -12,20 +12,20 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(PortfolioDbContext))]
-    [Migration("20260329030648_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260904190919_AddSeoToProjects")]
+    partial class AddSeoToProjects
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.10")
+                .HasAnnotation("ProductVersion", "10.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Core.Models.ContactForm", b =>
+            modelBuilder.Entity("Core.Entities.ContactForm", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,7 +55,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("ContactEntries");
                 });
 
-            modelBuilder.Entity("Core.Models.Project", b =>
+            modelBuilder.Entity("Core.Entities.Project", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -75,9 +75,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("PublishedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Slug")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("VideoLink")
                         .HasColumnType("nvarchar(max)");
 
@@ -86,7 +83,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("Core.Models.ProjectTranslation", b =>
+            modelBuilder.Entity("Core.Entities.ProjectTranslation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -101,6 +98,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Excerpt")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ImageAltText")
                         .HasColumnType("nvarchar(max)");
 
@@ -113,6 +113,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("ProjectID")
                         .HasColumnType("int");
+
+                    b.Property<string>("Slug")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Solution")
                         .IsRequired()
@@ -132,7 +135,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("ProjectTranslations");
                 });
 
-            modelBuilder.Entity("Core.Models.SeoContent", b =>
+            modelBuilder.Entity("Core.Entities.SeoContent", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -182,7 +185,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("SeoContents");
                 });
 
-            modelBuilder.Entity("Core.Models.Technology", b =>
+            modelBuilder.Entity("Core.Entities.Technology", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -328,7 +331,7 @@ namespace Infrastructure.Migrations
 
                     b.ToTable("AspNetUsers", (string)null);
 
-                    b.HasDiscriminator().HasValue("IdentityUser");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
 
                     b.UseTphMappingStrategy();
                 });
@@ -414,7 +417,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Core.Models.AppUser", b =>
+            modelBuilder.Entity("Core.Entities.AppUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -429,20 +432,59 @@ namespace Infrastructure.Migrations
                     b.HasDiscriminator().HasValue("AppUser");
                 });
 
-            modelBuilder.Entity("Core.Models.ProjectTranslation", b =>
+            modelBuilder.Entity("Core.Entities.ProjectTranslation", b =>
                 {
-                    b.HasOne("Core.Models.Project", "Project")
+                    b.HasOne("Core.Entities.Project", "Project")
                         .WithMany("Translations")
                         .HasForeignKey("ProjectID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsOne("Core.Entities.SeoMeta", "Seo", b1 =>
+                        {
+                            b1.Property<int>("ProjectTranslationId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("CanonicalUrl")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("MetaDescription")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("MetaTitle")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<bool>("NoFollow")
+                                .HasColumnType("bit");
+
+                            b1.Property<bool>("NoIndex")
+                                .HasColumnType("bit");
+
+                            b1.Property<string>("OgDescription")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("OgImageUrl")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("OgTitle")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("ProjectTranslationId");
+
+                            b1.ToTable("ProjectTranslations");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProjectTranslationId");
+                        });
+
                     b.Navigation("Project");
+
+                    b.Navigation("Seo");
                 });
 
-            modelBuilder.Entity("Core.Models.Technology", b =>
+            modelBuilder.Entity("Core.Entities.Technology", b =>
                 {
-                    b.HasOne("Core.Models.Project", null)
+                    b.HasOne("Core.Entities.Project", null)
                         .WithMany("Technologies")
                         .HasForeignKey("ProjectId");
                 });
@@ -498,7 +540,7 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Core.Models.Project", b =>
+            modelBuilder.Entity("Core.Entities.Project", b =>
                 {
                     b.Navigation("Technologies");
 

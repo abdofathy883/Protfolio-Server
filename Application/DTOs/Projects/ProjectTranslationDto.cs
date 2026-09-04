@@ -13,7 +13,7 @@ namespace Application.DTOs.Projects
         public string? Client { get; set; }
         public required string Problem { get; set; }
         public required string Solution { get; set; }
-        public string ImageAltText { get; set; }
-        public string VideoAltText { get; set; }
+        public string? ImageAltText { get; set; }
+        public string? VideoAltText { get; set; }
     }
 }

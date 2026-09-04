@@ -1,8 +1,9 @@
 using Application.Interfaces;
-using Core.Models;
-using Core.Settings;
-using Infrastructure.Data;
-using Infrastructure.Data.DbSeeder;
+using Core.Entities;
+using Core.Options;
+using Infrastructure.Persistance;
+using Infrastructure.Persistance.DbSeeder;
+using Infrastructure.Persistance.DbSeeder.DbSeeder;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
@@ -118,6 +119,7 @@ namespace AdminDashboard
                 var dbContext = services.GetRequiredService<PortfolioDbContext>();
                 await dbContext.Database.MigrateAsync();
                 await AuthSeeder.SeedAsync(services);
+                await SeoSeeder.SeedAsync(services);
             }
 
             app.Run();

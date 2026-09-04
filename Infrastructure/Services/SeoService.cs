@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Infrastructure.Data;
 using Core.Enums;
-using Core.Models;
 using Application.Interfaces;
 using Application.DTOs.Seo;
+using Infrastructure.Persistance;
+using Core.Entities;
 
 namespace Infrastructure.Services
 {
@@ -20,7 +20,7 @@ namespace Infrastructure.Services
 
         public async Task<SeoContentDTO> CreateSeoContent(CreateSeoContentDTO newContent)
         {
-            var seoContent = new Core.Models.SeoContent
+            var seoContent = new Core.Entities.SeoContent
             {
                 Route = newContent.Route,
                 Language = newContent.Language,

@@ -1,8 +1,8 @@
 ﻿using Application.DTOs.Projects;
 using Application.Interfaces;
+using Core.Entities;
 using Core.Enums;
-using Core.Models;
-using Infrastructure.Data;
+using Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using static System.Net.WebRequestMethods;
 
@@ -84,7 +84,18 @@ namespace Infrastructure.Services
                 Description = translation.Description,
                 PublishedAt = item.PublishedAt,
                 Problem = translation.Problem,
-                Solution = translation.Solution
+                Solution = translation.Solution,
+                Seo = translation.Seo == null
+                ? null : new Application.Dtos.Seo.SeoMetaDto
+                {
+                    MetaTitle = translation.Seo.MetaTitle,
+                    MetaDescription = translation.Seo.MetaDescription,
+                    OgTitle = translation.Seo.OgTitle,
+                    OgDescription = translation.Seo.OgDescription,
+                    OgImageUrl = translation.Seo.OgImageUrl,
+                    NoFollow = translation.Seo.NoFollow,
+                    NoIndex = translation.Seo.NoIndex
+                }
             };
         }
     }

@@ -1,5 +1,5 @@
 using AdminDashboard.Models;
-using Infrastructure.Data;
+using Infrastructure.Persistance;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;

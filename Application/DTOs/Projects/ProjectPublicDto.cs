@@ -1,4 +1,6 @@
-﻿using Core.Enums;
+﻿using Application.Dtos.Seo;
+using Application.DTOs.Technologies;
+using Core.Enums;
 
 namespace Application.DTOs.Projects
 {
@@ -9,7 +11,6 @@ namespace Application.DTOs.Projects
         public DateTime PublishedAt { get; set; }
         public string? ImageLink { get; set; }
         public string? VideoLink { get; set; }
-        public List<TechnologyDTO> Technologies { get; set; } = new();
         public string? LiveUrl { get; set; }
         public string? DemoUrl { get; set; }
         public required string Title { get; set; }
@@ -20,5 +21,7 @@ namespace Application.DTOs.Projects
         public required string Solution { get; set; }
         public string? ImageAltText { get; set; }
         public string? VideoAltText { get; set; }
+        public List<TechnologyDTO> Technologies { get; set; } = new();
+        public SeoMetaDto? Seo { get; set; }
     }
 }
