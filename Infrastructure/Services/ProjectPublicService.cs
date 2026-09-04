@@ -93,6 +93,7 @@ namespace Infrastructure.Services
                     OgTitle = translation.Seo.OgTitle,
                     OgDescription = translation.Seo.OgDescription,
                     OgImageUrl = translation.Seo.OgImageUrl,
+                    Keywords = translation.Seo.Keywords,
                     NoFollow = translation.Seo.NoFollow,
                     NoIndex = translation.Seo.NoIndex
                 }

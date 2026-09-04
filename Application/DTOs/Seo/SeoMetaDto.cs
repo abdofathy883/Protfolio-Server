@@ -7,6 +7,7 @@
         public string? OgTitle { get; set; }
         public string? OgDescription { get; set; }
         public string? OgImageUrl { get; init; }
+        public string? Keywords { get; set; }
         public bool NoIndex { get; init; }
         public bool NoFollow { get; init; }
     }

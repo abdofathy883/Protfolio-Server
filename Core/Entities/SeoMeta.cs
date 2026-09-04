@@ -11,6 +11,7 @@ namespace Core.Entities
         public string? OgDescription { get; set; }
         public string? OgImageUrl { get; set; }
         public string? CanonicalUrl { get; set; }
+        public string? Keywords { get; set; }
         public bool NoIndex { get; set; }
         public bool NoFollow { get; set; }
     }
